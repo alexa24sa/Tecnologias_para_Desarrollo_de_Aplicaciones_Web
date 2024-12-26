@@ -1,0 +1,376 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+html, body {
+    height: 100%;                    /* Asegura que el body ocupe toda la altura de la página */
+    margin: 0;                       /* Elimina márgenes por defecto */
+}
+
+
+body{
+    display: flex;
+    /*flex-direction: column;
+    /*justify-content: center;*/
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;               /* Asegura que el body tenga al menos la altura del viewport */
+    background: linear-gradient(to bottom, #3b82f6, #38bdf8); /* Degradado de azul oscuro a claro */
+    background-size: cover;          /* El fondo cubre toda el área visible */
+    background-position: center;     /* Centra el fondo */
+    background-attachment: fixed;    /* Fija el fondo al hacer scroll */
+    padding: 100px;                      /* Elimina cualquier padding para evitar desplazamiento innecesario */
+    margin: 0;                       /* Elimina cualquier margen extra */
+}
+
+
+
+
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    /*background: red;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+
+}
+
+.logo{
+    font-size: 2em;
+    color: #fff;
+    user-select: none;
+}
+
+/* Estilo para el botón de la hamburguesa */
+.navbar-toggler {
+    width: 40px;
+    height: 40px;
+    border: none; /* Sin borde */
+    background-color: transparent; /* Fondo transparente */
+    position: relative; /* Necesario si usas z-index */
+    z-index: 10000; /* Muy alto para asegurar visibilidad */
+}
+
+
+/* Estilo para el icono de la hamburguesa */
+.navbar-toggler-icon {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+}
+
+.collapse{
+    background: #162938;
+}
+
+.navigation a{
+    position: relative;
+    font-size: 1.1em;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 40px;
+
+}
+
+
+.navigation a::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s;
+
+}
+
+.navigation a:hover::after{
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+.navigation .btnLogin-popup{
+    width: 130px;
+    height: 50px;
+    background-color: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 40px;
+    transition: .5s;
+
+}
+
+.navigation .btnLogin-popup:hover{
+    background: #fff;
+    color: #162938;
+
+}
+
+
+/* Ajustar el wrapper para respetar el espacio del header */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrar también verticalmente */
+    width: 100%;
+    margin-top: 0; /* Eliminar margen extra */
+}
+
+.wrapper{
+    position: relative;
+    width: 400px;
+    max-height: 100%; /* No permitas que el formulario crezca más allá del viewport */
+    height: 440px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transform: scale(0);
+    transition: transform .5s ease, height .2s ease;
+    z-index: 1; /* Asegurar que no se superponga con el header */
+}
+
+.wrapper.active-popup{
+    transform: scale(1);
+}
+
+.wrapper.active{
+    height: 520px;
+
+}
+
+.wrapper .form-box{
+    width: 100%;
+    padding: 40px; /*el original tenia 40px*/
+   
+}
+
+/* Login Form (posición inicial) */
+.wrapper .form-box.login {
+    position: absolute;
+    transition: transform 0.3s ease; /* Transición suave */
+    transform: translateX(0); /* Login es visible inicialmente */
+}
+
+/* Register Form (posición inicial) */
+.wrapper .form-box.register {
+    position: absolute;
+    transition: transform 0.3s ease;
+    transform: translateX(100%); /* Register está fuera de la vista inicialmente */
+}
+
+/* Cuando se activa la clase .active en el wrapper */
+.wrapper.active .form-box.login {
+    transform: translateX(-100%); /* Mueve Login fuera de la vista */
+}
+
+.wrapper.active .form-box.register {
+    transform: translateX(0); /* Mueve Register a la vista */
+}
+
+
+
+/*.wrapper .form-box.login{
+    transition: transform .18s ease;
+    transform: translateX(0);
+}
+
+.wrapper.active .form-box .login{
+    transition: none;
+    transform: translateX(-400px);
+}
+
+.wrapper .form-box.register{
+    position: absolute;
+    transition: none;
+    transform: translateX(400px);
+}
+
+.wrapper.active .form-box.register{
+    transition: transform .18s ease;
+    transform: translateX(0);
+}*/
+
+.wrapper .form-box.register{
+    position: absolute;
+    transform: translateX(-400px);
+
+
+}	
+
+.wrapper .icon-close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: #162938;
+    font-size: 2em;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.form-box h2{
+    font-size: 2em;
+    color: #162938;
+    text-align: center;
+
+}
+
+.input-box{
+    position: relative;
+    width: 100%;
+    height: 55px;
+    border-bottom: 2px solid #162938;
+    margin: 15px; /*el original tenia 30px */
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%; /* Cambia de 50% a un valor fijo */
+    left: 5px;
+    transform: translateY(0); /* Quita el desajuste generado por translate */
+    font-size: 1em;
+    color: #162938;
+    font-weight: 500;
+    pointer-events: none; /* Hace que el clic pase al input */
+    transition: .5s; /* Mantiene la transición para animación */
+    line-height: 1; /* Ajusta la altura de línea */
+}
+
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -10px; /* Eleva el label */
+    font-size: 0.85em; /* Reduce el tamaño del texto para darle efecto */
+    color: #162938;
+}
+
+/*.input-box input:invalid{
+    border-bottom: rgb(151, 48, 48);
+}*/
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-weight: 600;
+    padding: 0 35px 0 5px;
+
+
+}
+
+.input-box .icon{
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: #162938;
+    line-height: 57px;
+
+}
+
+.remember-forgot{
+    font-size: .9em;
+    color: #162938;
+    font-weight: 500;
+    margin: -5px 0 15px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.remember-forgot label input{
+    accent-color: #162938;
+    margin-right: 3px;
+
+}
+
+.remember-forgot a{
+    color: #162938;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .5s;
+
+}
+
+.remember-forgot a:hover{
+    text-decoration: underline;
+}
+
+.btn{
+    width: 100%;
+    height: 45px;
+    background: #162938;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size:  1em;
+    color: #fff;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.btn:hover{
+    border: 3px solid;
+    background: #162938;
+    border-color: #678ba6;
+    font-size: 1em;
+    font-weight: 500;
+    color: #8fadc4;
+}
+
+.login-register{
+    font-size: .9em;
+    color: #162938;
+    text-align: center;
+    font-weight: 500;
+    margin: 25px 0 10px;
+}
+
+.login-register p a{
+    color: #162938;
+    text-decoration: none;
+    font-weight: 600;
+
+}
+
+.login-register p a:hover{
+    text-decoration: underline;
+}
+
