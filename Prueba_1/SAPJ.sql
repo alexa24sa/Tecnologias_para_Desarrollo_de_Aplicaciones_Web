@@ -277,6 +277,68 @@ SELECT * FROM usuarios;
 SELECT * FROM docentes;
 SELECT * FROM jefes_academia;
 
+-- CREAMOS UNA TABLA LLAMADA PETICIONES Y TIPO DE PETICIÓN
+-- CREAMOS UNA TABLA PARA DEFINIR LAS ETAPAS DEL TRÁMITE
+CREATE TABLE etapas (
+    id_etapa INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_etapa VARCHAR(30) NOT NULL
+);
+
+-- CREAMOS UNA TABLA PARA DEFINIR LOS TIPOS DE TRÁMITES
+CREATE TABLE tramite (
+    id_tramite INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_tramite VARCHAR(100) NOT NULL
+);
+
+-- INSERTAMOS DATOS DE PRUEBA EN LAS TABLAS DE ETAPAS Y TRÁMITES
+INSERT INTO etapas(nombre_etapa) 
+VALUES ('Enviado para revisión.'),
+       ('Pendiente.'),
+       ('Aprobado por Jefe Academia.'),
+       ('Rechazado por Jefe Academia.'),
+       ('Aprobado por Capital Humano.'),
+       ('Rechazado por Capital Humano.');
+
+INSERT INTO tramite(nombre_tramite)
+VALUES ('Pago de tiempo adicional'),
+       ('Día económico'),
+       ('Permiso especial');
+
+-- CREAMOS UNA TABLA PARA LAS PETICIONES
+CREATE TABLE peticiones (
+    id_peticion INT PRIMARY KEY AUTO_INCREMENT, -- Identificador único de la petición
+    curp_peticion VARCHAR(18) NOT NULL,         -- Usuario que hace la petición
+    rol_origen INT NOT NULL,                    -- Rol del usuario que hace la petición
+    rol_destino INT NOT NULL,                   -- Rol del destinatario de la petición
+    id_tramite INT NOT NULL,                    -- Tipo de trámite
+    link_pdf VARCHAR(255) NOT NULL,            -- Archivo relacionado con la petición
+    id_etapa INT NOT NULL DEFAULT 1,           -- Etapa inicial de la petición
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Fecha de creación de la petición
+    FOREIGN KEY (curp_peticion) REFERENCES usuarios(curp) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (rol_origen) REFERENCES rol(id_rol) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (rol_destino) REFERENCES rol(id_rol) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_tramite) REFERENCES tramite(id_tramite) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_etapa) REFERENCES etapas(id_etapa) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+INSERT INTO peticiones(curp_peticion, rol_origen, rol_destino, id_tramite, link_pdf, id_etapa)
+VALUES 
+('CURP123456HGTYSD1', 4, 3, 1, 'https://example.com/document1.pdf', 1),
+('CURP987654KJHGFDS2', 4, 3, 2, 'https://example.com/document2.pdf', 1),
+('CURP456789HGFRTES3', 4, 3, 3, 'https://example.com/document3.pdf', 2);
+
+
+-- realizamos pruebas:
+UPDATE peticiones
+SET rol_origen = 4, rol_destino=3
+WHERE curp_peticion = 'CURP123456HGTYSD1' or curp_peticion = 'CURP987654KJHGFDS2' or curp_peticion = 'CURP456789HGFRTES3';
+
+
+SELECT * FROM peticiones;
+
+
+
+
 
 
 
